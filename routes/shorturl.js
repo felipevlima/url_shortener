@@ -12,23 +12,27 @@ shortUrlRoute.post("/", async (req, res)=>{
     return res.status(401).json("Internal error. Please come back later.");
   }
   const urlCode = shortid.generate();
-  console.log(process.env.BASE_URL);
+  console.log(validUrl.isUri(originalUrl));
   if(validUrl.isUri(originalUrl)){
     try{
       const url = await Url.findOne({ originalUrl : originalUrl });
       console.log(url);
       if(url){
-        return  res.status(200).json(url);
-      }else{
-        const shortUrl = `${baseUrl}/${urlCode}`;
-          url = new Url({
-            originalUrl,
-            shortUrl,
-            urlCode,
-          });
-          await url.save()
-          return res.status(201).json(url);
-      }
+        return res.status(200).json(url);
+      } 
+
+      const shortUrl = `${baseUrl}/${urlCode}`;
+      console.log(shortUrl);
+      
+      url = new Url({
+        originalUrl,
+        shortUrl,
+        urlCode,
+      });
+
+      await url.save()
+      return res.status(201).json(url);
+      
     }catch(err){
       console.error(err.message);
       return res.status(500).json(`Internal Server error ${err.message}`);
