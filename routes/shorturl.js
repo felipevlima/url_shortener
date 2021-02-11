@@ -17,21 +17,22 @@ shortUrlRoute.post("/", async (req, res)=>{
     try{
       const url = await Url.findOne({ originalUrl : originalUrl });
       console.log(url);
+      
       if(url){
         return res.status(200).json(url);
       } 
 
       const shortUrl = `${baseUrl}/${urlCode}`;
       console.log(shortUrl);
-      
-      url = new Url({
+
+      const newUrl = new Url({
         originalUrl,
         shortUrl,
         urlCode,
       });
 
-      await url.save()
-      return res.status(201).json(url);
+      await newUrl.save()
+      return res.status(201).json(newUrl);
       
     }catch(err){
       console.error(err.message);
