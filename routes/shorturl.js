@@ -8,22 +8,22 @@ const shortUrlRoute = express.Router();
 shortUrlRoute.post("/", async (req, res)=>{
   const originalUrl = req.body.originalUrl;
   const baseUrl = process.env.BASE_URL;
+
   if(!validUrl.isUri(baseUrl)){
     return res.status(401).json("Internal error. Please come back later.");
   }
+
   const urlCode = shortid.generate();
-  console.log(validUrl.isUri(originalUrl));
+
   if(validUrl.isUri(originalUrl)){
     try{
       const url = await Url.findOne({ originalUrl : originalUrl });
-      console.log(url);
       
       if(url){
         return res.status(200).json(url);
       } 
 
       const shortUrl = `${baseUrl}/${urlCode}`;
-      console.log(shortUrl);
 
       const newUrl = new Url({
         originalUrl,
