@@ -12,6 +12,7 @@ shortUrlRoute.post("/", async (req, res)=>{
     return res.status(401).json("Internal error. Please come back later.");
   }
   const urlCode = shortid.generate();
+  console.log(process.env.BASE_URL);
   if(validUrl.isUri(originalUrl)){
     try{
       const url = await Url.findOne({ originalUrl : originalUrl });
