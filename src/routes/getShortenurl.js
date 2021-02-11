@@ -2,9 +2,11 @@ const express = require("express");
 const Url = require("../models/url");
 
 const getShortenUrlRoute = express.Router();
+
 getShortenUrlRoute.get('/:shortUrl', async (req, res) => {
   const shortUrlCode = req.params.shortUrl;
   const url = await Url.findOne({ urlCode: shortUrlCode });
+  
   try {
     if (url) {
       return res.redirect(url.originalUrl);
