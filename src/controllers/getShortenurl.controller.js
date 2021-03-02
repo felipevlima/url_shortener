@@ -7,7 +7,7 @@ class GetShortenerUrl {
     
     try {
       if (url) {
-        return res.redirect(url.originalUrl);
+        return res.status(302).redirect(url.originalUrl);
       } else {
         return res.status(400).json("The short url doesn't exists in our system.");
       }
