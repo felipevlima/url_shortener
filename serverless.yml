@@ -1,13 +1,26 @@
+# serveless.yml
 service: url-shortener
+
 provider:
   name: aws
   runtime: nodejs12.0
   stage: dev
   region: us-east-1
 
+plugins:
+  - serverless-offline
+
 function:
   app:
     handler: index.handler
     events:
       - http: ANY /
-      - http: `ANY {proxy+}`
+      - http: 'ANY {proxy+}'
+  redirectURL:
+    handler: index.handler
+    events:
+      - http: 'GET /{proxy+}'
+  generateTityURL:
+    handler: index.handler
+    events:
+      - http: 'POST /shorturl'
